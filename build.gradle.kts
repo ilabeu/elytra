@@ -1,33 +1,40 @@
 plugins {
-    id("fabric-loom") version "1.10"
-    id("maven-publish")
-    java
+    id "fabric-loom" version "1.6-SNAPSHOT"
 }
 
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
+
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
+
 repositories {
-    mavenCentral()
+    maven {
+        name = "Meteor Dev Releases"
+        url = "https://maven.meteordev.org/releases"
+    }
+    maven {
+        name = "Meteor Dev Snapshots"
+        url = "https://maven.meteordev.org/snapshots"
+    }
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${project.property("minecraft_version")}")
-    mappings("net.fabricmc:yarn:${project.property("yarn_mappings")}:v2")
-    modImplementation("net.fabricmc:fabric-loader:${project.property("loader_version")}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
+    // Fabric
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // Meteor
+    modImplementation "meteordevelopment:meteor-client:${project.meteor_version}"
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+processResources {
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version, "mc_version": project.minecraft_version
+    }
 }
-```
 
----
-
-## **3. Estrutura do projeto:**
-```
-src/main/
-├── java/com/seunome/elytraswap/
-│   ├── AutoElytraSwap.java     ← Mod principal
-│   └── ElytraSwapClient.java   ← Inicializador
-└── resources/
-    └── fabric.mod.json          ← Configuração do mod
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding("UTF-8")
+}
