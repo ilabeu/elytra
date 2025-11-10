@@ -2,20 +2,26 @@ plugins {
     id("fabric-loom") version "1.5-SNAPSHOT"
 }
 
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
-archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
+base {
+    archivesName.set(project.property("archives_base_name") as String)
+}
+
+version = project.property("mod_version") as String
+group = project.property("maven_group") as String
 
 repositories {
     maven {
         name = "Meteor Dev Releases"
-        url = "https://maven.meteordev.org/releases"
+        url = uri("https://maven.meteordev.org/releases")
     }
     maven {
         name = "Meteor Dev Snapshots"
-        url = "https://maven.meteordev.org/snapshots"
+        url = uri("https://maven.meteordev.org/snapshots")
     }
 }
 
@@ -26,11 +32,6 @@ dependencies {
     modImplementation("meteordevelopment:meteor-client:${project.extra["meteor_version"]}")
 
     include("meteordevelopment:meteor-client:${project.extra["meteor_version"]}")
-}
-
-
-    // Meteor
-    modImplementation "meteordevelopment:meteor-client:${project.meteor_version}"
 }
 
 tasks.processResources {
@@ -47,7 +48,6 @@ tasks.processResources {
     }
 }
 
-
-tasks.withType(JavaCompile).configureEach {
-    it.options.encoding("UTF-8")
+tasks.withType<JavaCompile>().configureEach {
+    it.options.encoding = "UTF-8"
 }
