@@ -49,5 +49,6 @@ tasks.processResources {
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    it.options.encoding = "UTF-8"
+    options.encoding = "UTF-8"
 }
+
