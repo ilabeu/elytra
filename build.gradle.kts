@@ -20,10 +20,14 @@ repositories {
 }
 
 dependencies {
-    // Fabric
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    minecraft("com.mojang:minecraft:${project.extra["minecraft_version"]}")
+    mappings("net.fabricmc:yarn:${project.extra["yarn_mappings"]}:v2")
+    modImplementation("net.fabricmc:fabric-loader:${project.extra["loader_version"]}")
+    modImplementation("meteordevelopment:meteor-client:${project.extra["meteor_version"]}")
+
+    include("meteordevelopment:meteor-client:${project.extra["meteor_version"]}")
+}
+
 
     // Meteor
     modImplementation "meteordevelopment:meteor-client:${project.meteor_version}"
