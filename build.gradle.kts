@@ -33,11 +33,20 @@ dependencies {
     modImplementation "meteordevelopment:meteor-client:${project.meteor_version}"
 }
 
-processResources {
+tasks.processResources {
+    inputs.property("version", project.version)
+    inputs.property("mc_version", project.extra["minecraft_version"])
+
     filesMatching("fabric.mod.json") {
-        expand "version": project.version, "mc_version": project.minecraft_version
+        expand(
+            mapOf(
+                "version" to project.version,
+                "mc_version" to project.extra["minecraft_version"]
+            )
+        )
     }
 }
+
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding("UTF-8")
